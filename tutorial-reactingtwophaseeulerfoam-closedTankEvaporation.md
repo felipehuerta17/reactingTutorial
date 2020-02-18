@@ -14,4 +14,4 @@ tutorial-reactingTwoPhaseEulerFoam
   
 ## Geometry
 
-The geometry for this tutorial consists of a 2D cylinder. The mesh consists on a *wedge*.
+The geometry for this tutorial consists of a 2D cylinder. In OpenFOAM, 2D axisymmetrical cylinders are modelled as wedges. The mesh was created with gmsh.
