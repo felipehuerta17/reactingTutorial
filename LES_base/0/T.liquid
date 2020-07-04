@@ -1,0 +1,50 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1806                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T.liquid;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions          [0 0 0 1 0 0 0];
+
+internalField       uniform  111.538;
+
+boundaryField
+{
+    bottom
+    {
+        type            zeroGradient;
+    }
+
+    top
+    {
+         type            zeroGradient;
+    }
+
+    tankWall
+    {
+         type            fixedMultiPhaseHeatFlux;
+         relax           0.02;
+         q               uniform 108.4986;
+         phase           "liquid";
+         value           $internalField;
+         Tmin            111.538;
+    }
+
+    "(front|back)"
+    {
+        type            wedge;
+    }
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

@@ -1,0 +1,107 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1806                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T.gas;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions          [0 0 0 1 0 0 0];
+
+internalField       uniform 111.538;
+
+boundaryField
+{
+    bottom
+    {
+
+        type            zeroGradient;
+    }
+
+    top
+    {
+        type            zeroGradient;
+    }
+
+    tankWall
+    {
+         type            codedMixed;
+         refValue        uniform 288.15;
+         refGradient     uniform 0;
+         valueFraction   uniform 0;
+         value           uniform 111.538;
+         name            convection_Conduction;
+
+        codeInclude
+        #{
+            #include "fvCFD.H"
+            #include "fvPatchFieldMapper.H"
+            #include "addToRunTimeSelectionTable.H"
+            #include "phaseSystem.H"
+            #include "compressibleTurbulenceModel.H"
+            #include "ThermalDiffusivity.H"
+            #include "PhaseCompressibleTurbulenceModel.H"
+        #};
+
+        codeOptions
+        #{
+            -I$(LIB_SRC)/meshTools/lnInclude \
+            -I$(LIB_SRC)/finiteVolume/lnInclude \
+            -I$(LIB_SRC)/sampling/lnInclude \
+            -I$(LIB_SRC)/phaseSystemModels/reactingEulerFoam/reactingTwoPhaseEulerFoam/twoPhaseSystem/lnInclude \
+            -I$(LIB_SRC)/phaseSystemModels/reactingEulerFoam/interfacialCompositionModels/lnInclude \
+            -I$(LIB_SRC)/phaseSystemModels/reactingEulerFoam/phaseSystems/lnInclude \
+            -I$(LIB_SRC)/phaseSystemModels/reactingEulerFoam/interfacialModels/lnInclude \
+            -I$(LIB_SRC)/phaseSystemModels/reactingEulerFoam/reactingTwoPhaseEulerFoam/twoPhaseCompressibleTurbulenceModels/lnInclude \
+            -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
+            -I$(LIB_SRC)/transportModels/compressible/lnInclude \
+            -I$(LIB_SRC)/TurbulenceModels/turbulenceModels/lnInclude \
+            -I$(LIB_SRC)/TurbulenceModels/compressible/lnInclude \
+            -I$(LIB_SRC)/TurbulenceModels/phaseCompressible/lnInclude
+        #};
+
+         code
+         #{
+            const fvPatch& boundaryPatch = patch();     // Access to the patch
+            const scalarField& deltaCoeffs = boundaryPatch.deltaCoeffs();            
+            const phaseSystem& fluid = this->db().objectRegistry::lookupObject<phaseSystem>("phaseProperties");
+            const phaseModel& phase = fluid.phases()[0]; // 0 gas 1 liquid
+            const fluidThermo& thermo = phase.thermo();
+            const fvPatchScalarField& T = thermo.T().boundaryField()[patch().index()];
+            const scalarField kappaEff (phase.kappaEff(patch().index()));
+            const fvPatchScalarField& alpha = phase.boundaryField()[patch().index()]; // 1 gas 0 liquid
+            scalarField alphakappaEff = alpha*kappaEff;
+
+            // We will include a relaxation factor
+            const scalar relax = 1;//0.012;//0.012;
+ 
+            //const volScalarField& kApp = thermo.kappa();
+            const scalar U = 0.97*1.9000e-02; // U is corrected by the initial U_star = LF_physical/LF_numerical
+            this->refValue() = 288.15; 
+            this->refGrad() = 0;    
+            this->valueFraction() = this->valueFraction() * (1-relax) + relax*1.0/(1.0 + kappaEff/(U*(1/deltaCoeffs)) ); // Robin BC
+            // this->valueFraction() = 1.0/(1.0 + k/(U*(1/deltaCoeffs)) ); // Robin BC
+
+            // Debug
+            //const phaseModel& phase2 = fluid.phases()[0]; // 0 gas 1 liquid
+            //const fluidThermo& thermo2 = phase2.thermo();
+            //Info << "h_V = " << thermo2.he() << endl;
+        #};
+    }
+
+    "(front|back)"
+    {
+        type            wedge;
+    }
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

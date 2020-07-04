@@ -1,0 +1,9 @@
+# !/bin/sh
+# Initializes temperature and phase fraction fields
+# For multiphase simulations.
+# It must be run at t=0 before running ./Allrun
+# cp 0/T.orig 0/T
+cp 0/alpha.gas.orig 0/alpha.gas
+cp 0/alpha.liquid.orig 0/alpha.liquid
+
+setFields

@@ -1,0 +1,65 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1806                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      thermophysicalProperties.gas;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type            heRhoThermo;
+    mixture         pureMixture;
+    transport       const;
+    thermo          eRefConst;//hConst;
+    equationOfState perfectGas;
+    specie          specie;
+    energy          sensibleInternalEnergy;
+}
+
+dpdt no;
+
+species
+(
+    methane
+);
+
+
+mixture
+{
+    specie
+    {
+        nMoles 1;
+        molWeight       16.0425;
+    }
+    equationOfState
+    {
+        pRef       100000;
+        rho        2.056;
+    }
+
+    thermodynamics
+    {
+        Hf          0;
+        Cv          1614.683;
+        Cp          2216.457;
+        Tref        111.538;
+        Eref        -160982.674033;// INTERNAL ENERGY OF PHASE CHANGE LOL
+    }
+    transport
+    {
+        mu          4.2407e-6;
+        Pr          0.8195;
+    }
+}
+
+// ************************************************************************* //

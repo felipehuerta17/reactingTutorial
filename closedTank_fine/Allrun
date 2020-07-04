@@ -1,0 +1,20 @@
+#!/bin/sh
+# Felipe Huerta - August 2019
+# Convenient OpenFOAM script to perform vapour phase heat transfer modelling
+# Using the Boussinesq approximation
+cd ${0%/*} || exit 1
+
+DIR_proc = "processor0"
+# Decompose the domain if it hasn't been decomposed previously
+if [ ! -e "$DIR_proc" ]; then
+        decomposePar
+fi
+
+# Run buoyantBoussinesqPimpleFoam
+# It could be automated to read the number of processors
+# From the decomposeParDict!
+
+mpirun -np 8 reactingTwoPhaseEulerFoam -parallel > buoy.log
+
+# Store the results in a tarball
+# tar -cf results.tar.gz *

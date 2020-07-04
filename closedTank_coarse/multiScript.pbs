@@ -1,0 +1,37 @@
+#PBS -l walltime=01:55:00
+#PBS -l select=1:ncpus=24:mem=3gb
+
+# November 2019 Version
+# -- load OpenFOAM and MPI 
+module load openfoam/1906
+module load mpi
+
+# -- Change to working directory --
+cd $PBS_O_WORKDIR
+
+# Remove dynamicCode as recompilation is necessary every time
+# the program is run in a parallel machine
+DIR_dyn=dynamicCode
+if [ -e "$DIR_dyn" ]; then
+	rm -r dynamicCode
+fi
+
+# Decompose the domain just if it hasn't been decomposed yet
+# Decompose par most be run locally
+# cp system/decomposeParDict_24 system/decomposeParDict
+# decomposePar
+##DIR_proc=processor0
+##if [ ! -e "$DIR_proc" ]; then
+##	decomposePar
+##fi
+mpiexec reactingTwoPhaseEulerFoam -parallel > foam.log
+
+# -- run model reconstruction --
+reconstructPar
+
+# Compress the results to send to the local PC
+dir_out=${PWD##*/}
+# Exclude buoy.log because is too heavy
+tar -cf $dir_out.tar --exclude foam.log --exclude=processor**
+# scp directly to local, because the public/private keys are shared
+scp $dir_out.tar felipe@155.198.96.61:~/HPC_Results
