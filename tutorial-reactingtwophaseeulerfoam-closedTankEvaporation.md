@@ -1,6 +1,4 @@
-tutorial-reactingTwoPhaseEulerFoam
-
-# Non-isobaric evaporation of liquid nitrogen in a closed vessel
+## Non-isobaric evaporation of liquid nitrogen in a closed vessel
 
 In this tutorial, we examine the evaporation of liquid nitrogen during it's storage in a closed vessel. Liquid nitrogen is a cryogenic liquid which saturation temperature is 77.1K at 1 atm of pressure. Cryogenic liquids are normally stored in multi-layered insulated storage tanks, to minimize the heat ingress from the surroundings driven by the large temperature difference between the environment and the cryogenic liquid.
 
@@ -16,9 +14,10 @@ The vapour phase is heated through the tank roof and walls by the same mechanism
 
 - Solver: reactingTwoPhaseEulerFoam
 - Goals: 
-  - Learn how to set up a multiphase simulation with thermally driven phase change under non-isobaric conditions
-  - Understand the relevant submodels of drag, lift, heat and mass transfer on the constant/phaseProperties dictionary
-  - 
+* Learn how to set up a multiphase simulation with thermally driven phase change under non-isobaric conditions.
+* Understand how to include thermodynamic and thermophysical properties consistently in the thermodynamicProperties and phaseProperties dictionary.
+* Examine results critically after the simulation
+* Perform a simple thermodynamic validation as part of the case workflow
   
 - [Simulation](closedTankEvaporation)
   - example: pressure build-up during the evaporation of liquid nitrogen in a storage tank
@@ -26,10 +25,11 @@ The vapour phase is heated through the tank roof and walls by the same mechanism
 ## Workflow
 
 1. Create the geometry
-2. 
-3.
-4.
+2. Setup thermodynamic and thermophysical properties of liquid nitrogen
+3. Define initial and boundary conditions in the 0/ directory
+4. Setup simulation settings
+5. Running the simulation
 
-## Geometry
+## 1. Create the geometry
 
 The geometry for this tutorial consists of a 2D cylinder. In OpenFOAM, 2D axisymmetrical cylinders are modelled as wedges. The mesh was created with gmsh.
