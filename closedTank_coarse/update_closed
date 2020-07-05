@@ -6,7 +6,7 @@
 
 cd ${0%/*} || exit 1                        # Run from this directory
 rm -r constant/polyMesh
-gmsh -3 cyl_sructured.geo -o cyl_multi.msh
+gmsh -3 cyl_structured.geo -o cyl_multi.msh
 gmshToFoam cyl_multi.msh
 checkMesh
 python3 rename_closed.py ## Automatically rename wall and wedge patches

@@ -28,37 +28,28 @@ thermoType
 
 dpdt no;
 
-//species
-//(
-//    methane
-//);
+// Liquid nitrogen at P = 1 bar
 
-//inertSpecie methane;
-
-"(mixture|methane)"
+mixture
 {
     specie
     {
-        molWeight       16.0425;
+        molWeight       28.0135;
     }
     equationOfState
     {
-        rhoCoeffs<8> ( 585.0412995 -1.45685111 0  0 0 0 0 0);
+        rhoCoeffs<8> ( 1161.58 -4.595 0  0 0 0 0 0);
     }
     thermodynamics
     {
-        Hf          -660000;//-6165.687;//4.666978e6;
-        CpCoeffs<8>          (3303 0 0 0 0 0 0 0);
-        // Cv          2057.155;
-        Sf          100000;
-        // Eref        -793.9755;
-        // Href        -6165.687;
-        // Tref       111.538;
+        Hf          0;
+        CpCoeffs<8>          (2040.959 0 0 0 0 0 0 0);
+        Sf          0;
     }
     transport
     {
-        muCoeffs<8>          (1.184284e-4 0 0 0 0 0 0 0);
-        kappaCoeffs<8>        (0.1862 0 0 0 0 0 0 0);
+        muCoeffs<8>          (1.614e-4 0 0 0 0 0 0 0);
+        kappaCoeffs<8>        (0.145 0 0 0 0 0 0 0);
     }
 }
 

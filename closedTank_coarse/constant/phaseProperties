@@ -98,7 +98,7 @@ saturationModel
 
     type constant;
     pSat 100000;
-    Tsat 111.538;
+    Tsat 77.243;
 
 };
 

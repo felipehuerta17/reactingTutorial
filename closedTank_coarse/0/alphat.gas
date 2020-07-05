@@ -55,6 +55,7 @@ boundaryField
             alphaCrit   0.2;
         }
         value           uniform 0;
+        relax           1;
     }
 
     "(front|back)"

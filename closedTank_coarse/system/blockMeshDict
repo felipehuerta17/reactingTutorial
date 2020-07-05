@@ -34,7 +34,7 @@ edges
 
 blocks
 (
-     hex (0 4 1 0 3 5 2 3) (80 1 120) simpleGrading (1 1 1)
+     hex (0 4 1 0 3 5 2 3) (40 1 120) simpleGrading (1 1 1)
 );
 
 boundary               // keyword

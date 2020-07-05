@@ -39,7 +39,7 @@ mixture
     specie
     {
         nMoles 1;
-        molWeight       16.0425;
+        molWeight       28.0135;
     }
     equationOfState
     {
@@ -50,10 +50,10 @@ mixture
     thermodynamics
     {
         Hf          0;
-        Cv          1614.683;
-        Cp          2216.457;
-        Tref        111.538;
-        Eref        -160982.674033;// INTERNAL ENERGY OF PHASE CHANGE LOL
+        Cv          771.036;
+        Cp          1123.117;
+        Tref        77.243;
+        Eref        -439113.18;// INTERNAL ENERGY OF PHASE CHANGE LOL
     }
     transport
     {

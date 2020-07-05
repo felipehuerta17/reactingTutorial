@@ -2,7 +2,11 @@
 // Imperial College London
 radius = 0.105;
 height = 0.213;
-gridsize = 0.01*radius;
+
+gridsize = 0.02*radius;
+n_r = Round(radius/gridsize);
+n_z = Round(height/gridsize);
+
 
 Point(1) = {0,height/2,0,gridsize};
 Point(2) = {0,-height/2,0,gridsize};
@@ -15,11 +19,11 @@ Line(7) = {3,4};
 Line(8) = {4,1};
 
 // Make non-uniform mesh in R
-Transfinite Line{6} = 100 Using Bump 0.05;
-Transfinite Line{8} = 100 Using Bump 0.05;
+Transfinite Line{6} = n_r; // Using Bump 0.05;
+Transfinite Line{8} = n_r; // Using Bump 0.05;
 
-Transfinite Line{7} = 200 Using Bump 0.025;
-Transfinite Line{5} = 200 Using Bump 0.025;
+Transfinite Line{7} = n_z; // Using Bump 0.025;
+Transfinite Line{5} = n_z; // Using Bump 0.025;
 
 Line Loop(9) = {5:8};
 Plane Surface(10) = {9};

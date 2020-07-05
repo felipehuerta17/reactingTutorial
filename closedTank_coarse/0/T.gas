@@ -17,7 +17,7 @@ FoamFile
 
 dimensions          [0 0 0 1 0 0 0];
 
-internalField       uniform 111.538;
+internalField       uniform 77.243;
 
 boundaryField
 {
@@ -34,10 +34,9 @@ boundaryField
 
     tankWall
     {
-        //type            copiedFixedValue;
-        //sourceFieldName T.liquid;
-        //value           111.538;
-        type            zeroGradient;
+        type            copiedFixedValue;
+        sourceFieldName T.liquid;
+        value           77.243;
     }
 
     "(front|back)"
