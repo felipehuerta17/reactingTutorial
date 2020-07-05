@@ -1,0 +1,99 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1806                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// This blockMeshDict generates a wedge
+// Sourced from https://openfoamwiki.net/index.php/Main_ContribExamples/AxiSymmetric
+scale   1;
+
+vertices
+(   
+    (0 0 0)
+    (0.10490 0.00458 0)
+    (0.10490 0.00458 0.21300)
+    (0 0 0.213)
+    (0.10490 -0.00458 0)
+    (0.10490 -0.00458 0.21300)
+);
+
+edges
+(
+);
+
+blocks
+(
+     hex (0 4 1 0 3 5 2 3) (40 1 120) simpleGrading (1 1 1)
+);
+
+boundary               // keyword
+    (
+       front
+     { 
+           type wedge;
+           faces  
+           (
+               (0 1 2 3)
+           );
+      }
+     back
+     { 
+           type wedge;
+           faces  
+           (
+               (0 3 5 4)
+           );
+      }
+     tankWall
+     { 
+           type wall;
+           faces  
+           (
+               (1 4 5 2)
+           );
+      }
+     bottom
+     { 
+           type wall;
+           faces  
+           (
+               (0 4 1 0)
+           );
+      }
+     
+     top
+     { 
+           type wall;
+           faces  
+           (
+               (3 5 2 3)
+           );
+      }
+     axis
+     { 
+           type empty;
+           faces  
+           (
+               (0 3 3 0)
+           );
+      }
+    );
+    
+
+
+mergePatchPairs
+(
+);
+
+// ************************************************************************* //
