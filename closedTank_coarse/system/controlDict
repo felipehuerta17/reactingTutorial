@@ -23,13 +23,13 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         0.1;
+endTime         0.5;
 
 deltaT          1e-3;
 
 writeControl    adjustableRunTime;
 
-writeInterval   0.01;
+writeInterval   0.05;
 
 purgeWrite      0;
 
@@ -47,9 +47,48 @@ runTimeModifiable yes;
 
 adjustTimeStep  yes;
 
-maxCo           0.25;
+maxCo           0.5;
 
 maxDeltaT       3e-3;
 
+functions
+{
+    // Average tank pressure
+    p_average
+    {
+        type            volFieldValue;
+        libs            ("libfieldFunctionObjects.so");
 
+        log             true;
+        writeControl    writeTime;
+        writeFields     true;
+
+        regionType      all;
+        operation       volAverage;
+
+        fields
+        (
+            p
+        );
+    }
+
+    // Average vapour temperature
+    Tv_average
+    {
+        type            volFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+
+        log             true;
+        writeControl    writeTime;
+        writeFields     true;
+
+        regionType      all;
+        operation       volAverage;
+
+        fields
+        (
+            T.gas
+        );
+    }
+}
 // ************************************************************************* // 
