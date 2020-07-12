@@ -91,15 +91,9 @@ surfaceTension
 
 saturationModel
 {
-    // type Antoine; //Prydz and Goodwin, 1972, webbook.nist.gov
-    // A  20.699;
-    // B  -1020.110;
-    // C  -0.490;
-
     type constant;
     pSat 100000;
-    Tsat 77.243;
-
+    Tsat 77.622;
 };
 
 aspectRatio
