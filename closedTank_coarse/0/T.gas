@@ -17,7 +17,7 @@ FoamFile
 
 dimensions          [0 0 0 1 0 0 0];
 
-internalField       uniform 77.243;
+internalField       uniform 77.622;
 
 boundaryField
 {
@@ -36,7 +36,7 @@ boundaryField
     {
         type            copiedFixedValue;
         sourceFieldName T.liquid;
-        value           77.243;
+        value           77.622;
     }
 
     "(front|back)"
