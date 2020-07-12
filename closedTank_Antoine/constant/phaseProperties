@@ -1,0 +1,239 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1806                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+type    thermalPhaseChangeTwoPhaseSystem;
+
+phases (gas liquid);
+
+phaseChange on;
+
+gas
+{
+    type            purePhaseModel;
+    diameterModel   constant;
+    constantCoeffs
+    {
+        d               0.0001;
+    }
+    Sct              0.7;
+
+    residualAlpha   1e-4;
+}
+
+liquid
+{
+    type            purePhaseModel;
+    diameterModel   constant;
+    constantCoeffs
+    {
+        d               0.0001;
+    }
+    Sct              0.7;
+
+    residualAlpha   1e-4;
+}
+
+blending
+{
+    default
+    {
+        type            linear;
+        continuousPhase liquid;
+        minFullyContinuousAlpha.gas 1;
+        minPartlyContinuousAlpha.gas 0;
+        minFullyContinuousAlpha.liquid 1;
+        minPartlyContinuousAlpha.liquid 0;
+    }
+
+    heatTransfer
+    {
+        type            linear;
+        continuousPhase liquid;
+        minFullyContinuousAlpha.gas 1;
+        minPartlyContinuousAlpha.gas 0;
+        minFullyContinuousAlpha.liquid 1;
+        minPartlyContinuousAlpha.liquid 0;
+    }
+
+    massTransfer
+    {
+        type            linear;
+        continuousPhase liquid;
+        minFullyContinuousAlpha.gas 1;
+        minPartlyContinuousAlpha.gas 0;
+        minFullyContinuousAlpha.liquid 1;
+        minPartlyContinuousAlpha.liquid 0;
+    }
+}
+
+surfaceTension
+(
+    (gas and liquid)
+    {
+        type            constant;
+        sigma           0.012;
+    }
+);
+
+saturationModel
+{
+    type Antoine; 
+    A  20.116;
+    B  -609.381;
+    C  -6.788;
+
+    /* Edejer and Thodos, 1967,
+    https://webbook.nist.gov/cgi/cbook.cgi?Name=nitrogen&Units=SI&cTG=on&cTC=on&cTP=on#ref-10
+
+    A,B,C were transformed to natural logarithm base.
+
+    Edejer, Merardo P.; Thodos, George, Vapor pressures of liquid nitrogen
+    between the triple and critical points,
+    J. Chem. Eng. Data, 1967, 12, 2, 206-209, https://doi.org/10.1021/je60033a014.
+    */
+};
+
+aspectRatio
+(
+    (gas in liquid)
+    {
+        type            constant;
+        E0              1.0;
+    }
+
+    (liquid in gas)
+    {
+        type            constant;
+        E0              1.0;
+    }
+);
+
+drag
+(
+    (gas in liquid)
+    {
+        type            SchillerNaumann;
+        residualRe      1e-4;
+        swarmCorrection
+        {
+            type        none;
+        }
+    }
+
+    (liquid in gas)
+    {
+        type            SchillerNaumann;
+        residualRe      1e-4;
+        swarmCorrection
+        {
+            type        none;
+        }
+    }
+);
+
+virtualMass
+(
+    (gas in liquid)
+    {
+        type            constantCoefficient;
+        Cvm             0.5;
+    }
+
+    (liquid in gas)
+    {
+        type            constantCoefficient;
+        Cvm             0.5;
+    }
+);
+
+interfaceComposition
+();
+
+heatTransfer.gas
+(
+    (gas in liquid)
+    {
+        type RanzMarshall;
+        residualAlpha 1e-4;
+    }
+
+    (liquid in gas)
+    {
+        type spherical;
+        residualAlpha 1e-4;
+    }
+
+);
+
+heatTransfer.liquid
+(
+    (gas in liquid)
+    {
+        type RanzMarshall;
+        residualAlpha 1e-4;
+    }
+
+    (liquid in gas)
+    {
+        type spherical;
+        residualAlpha 1e-4;
+    }
+);
+
+massTransfer.gas
+();
+
+massTransfer.liquid
+();
+
+lift
+();
+
+wallLubrication
+(
+    (gas in liquid)
+    {
+        type            Antal;
+        Cw1             -0.01;
+        Cw2             0.05;
+        Cwc             10.0;
+        Cwd             6.8;
+        p               1.7;
+    }
+);
+
+turbulentDispersion
+(
+    (gas in liquid)
+    {
+        type                Burns;
+        sigma               0.7;
+        Ctd                 1.0;
+        residualAlpha       1e-3;
+    }
+);
+
+phaseTransfer
+(    
+);
+
+
+// Minimum allowable pressure
+pMin            10000;
+
+
+// ************************************************************************* //
