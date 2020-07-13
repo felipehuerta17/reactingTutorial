@@ -20,19 +20,13 @@ thermoType
     type            heRhoThermo;
     mixture         pureMixture;
     transport       const;
-    thermo          eRefConst;//hConst;
+    thermo          eRefConst;
     equationOfState perfectGas;
     specie          specie;
     energy          sensibleInternalEnergy;
 }
 
 dpdt no;
-
-species
-(
-    methane
-);
-
 
 mixture
 {
@@ -44,7 +38,6 @@ mixture
     equationOfState
     {
         pRef       100000;
-        rho        2.056;
     }
 
     thermodynamics
@@ -52,13 +45,13 @@ mixture
         Hf          0;
         Cv          771.036;
         Cp          1123.117;
-        Tref        77.243;
-        Eref        -439113.18;// INTERNAL ENERGY OF PHASE CHANGE LOL
+        Tref        77.622;
+        Eref        -252189.3732;
     }
     transport
     {
-        mu          4.2407e-6;
-        Pr          0.8195;
+        mu          5.435e-6; // Vapour dynamic viscosity
+        Pr          0.8509;
     }
 }
 

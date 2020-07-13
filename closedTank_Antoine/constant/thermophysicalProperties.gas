@@ -52,13 +52,13 @@ mixture
         Hf          0;
         Cv          771.036;
         Cp          1123.117;
-        Tref        77.243;
-        Eref        -439113.18;// INTERNAL ENERGY OF PHASE CHANGE LOL
+        Tref        77.622;
+        Eref        -252189.3732;// INTERNAL ENERGY OF PHASE CHANGE LOL
     }
     transport
     {
-        mu          4.2407e-6;
-        Pr          0.8195;
+        mu          5.435e-6;
+        Pr          0.8509;
     }
 }
 
